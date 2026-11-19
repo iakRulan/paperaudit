@@ -1,0 +1,6 @@
+{
+  "case_id": "example-audit",
+  "paper": "paper.pdf",
+  "facets": ["structure", "consistency", "methods", "argument", "ethics"],
+  "notes": "示例输入：paper.pdf 需与 case.json 同目录或给出绝对路径。"
+}
