@@ -5,6 +5,8 @@ description: "Audit a scientific paper for quality, structure, fact consistency,
 
 # paperaudit — Evidence-bearing Paper Quality Audit
 
+> **脚本路径**：本技能安装于 `/skills/weekly-skill/`，脚本绝对路径为 `/skills/weekly-skill/scripts/`（工作目录是 `/app/work`，不要用相对路径）。
+
 Turn "this paper has problems" into a set of actionable, checkable items: which sentence, which section, what evidence, how severe, what to change. The failure mode this skill exists to prevent: a vague commentary ("结构完整、论证充分"), a flat list of typos, or unsupported claims like "引用不支持观点" with no mapping to the cited work.
 
 **Method in one line:** extract the paper into a citable structure (page / section / paragraph), run deterministic checks that are grounded in verbatim quotes, then let the model add judgment on the facets that cannot be pattern-matched — and record what was **not** checked.
@@ -20,7 +22,7 @@ Turn "this paper has problems" into a set of actionable, checkable items: which 
 ### Phase 1 — Extract to a citable structure
 
 ```bash
-python3 scripts/extract_paper.py --paper <paper.pdf> --out /app/work
+python3 /skills/weekly-skill/scripts/extract_paper.py --paper <paper.pdf> --out /app/work
 ```
 
 Produces `work/paper.json`: title, abstract, per-page stats, sections, paragraphs (each with `page`, `section`, `index`, `text`), references, tables, figures. Also writes `work/full_text.txt` for reading.
@@ -32,7 +34,7 @@ If the PDF has almost no text (scanned), say so in `result.json.uncertainty` and
 ### Phase 2 — Deterministic, evidence-bearing checks
 
 ```bash
-python3 scripts/audit.py --case /input/case.json --work /app/work
+python3 /skills/weekly-skill/scripts/audit.py --case /input/case.json --work /app/work
 ```
 
 Checks (each grounded in a quote + location):
@@ -61,7 +63,7 @@ Merge your additions into `audit_report.json` (keep the same schema) and record 
 ### Phase 4 — Report
 
 ```bash
-python3 scripts/report.py --case /input/case.json --work /app/work
+python3 /skills/weekly-skill/scripts/report.py --case /input/case.json --work /app/work
 ```
 
 Writes `work/result.json` with `case_id`, `audit_status` (通过 / 问题 / 待复核 / 未检查), counts by severity and status, the full findings list, `uncertainty`, `sources` and `changes`.
